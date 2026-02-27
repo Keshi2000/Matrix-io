@@ -103,15 +103,24 @@ proxy-providers:
 
 # [策略组]
 proxy-groups:
-  - name: "自行选择"
+  - name: "兜底策略"
     type: select
-    icon: https://raw.githubusercontent.com/Centralmatrix3/Matrix-io/master/Gallery/Color/Static.png
+    icon: https://raw.githubusercontent.com/fmz200/wool_scripts/main/icons/apps/Stash.png
     url: "https://cp.cloudflare.com/generate_204"
     include-all: true
     filter: "^"
     interval: 1800
     lazy: true
-
+    
+  - name: "大陆服务"
+    type: select
+    icon: https://raw.githubusercontent.com/fmz200/wool_scripts/main/icons/flag/CN_02.png
+    url: "https://cp.cloudflare.com/generate_204"
+    include-all: true
+    filter: "^"
+    interval: 1800
+    lazy: true
+    
   - name: "苹果服务"
     type: select
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/App_Store.png
@@ -278,27 +287,69 @@ proxy-groups:
 
 # [本地规则]
 rules:
-  - RULE-SET,规则修正,DIRECT
-  - RULE-SET,广告拦截,REJECT
-  - RULE-SET,港台媒体,港台媒体
+  - RULE-SET,iCloud,苹果服务 # iCloud
+  - RULE-SET,苹果Test,苹果服务 #Testflight
+  - RULE-SET,China IP,大陆服务 # China IP
+  - RULE-SET,大陆服务,大陆服务 # 大陆
+  - RULE-SET,大陆服务Max,大陆服务 # 大陆
+  - RULE-SET,大陆服务ipv4,大陆服务 # 大陆
+  - RULE-SET,China ASN,大陆服务 #ChinaASN
+  - RULE-SET,Apple servers,苹果服务 # 苹果服务
+  - RULE-SET,假日飞行家,假日飞行家 # 卷
+  - RULE-SET,AppleProxy,苹果服务 # 苹果
+  - RULE-SET,Apple CN,苹果服务 # 苹果CN
+  - RULE-SET,App Store,苹果服务 # 苹果商店
+  - RULE-SET,Apple ID,苹果服务 # 苹果id
+  - RULE-SET,Apple,苹果服务
+  - RULE-SET,AI,人工智能
   - RULE-SET,人工智能,人工智能
-  - RULE-SET,国内媒体,国内媒体
-  - RULE-SET,国外媒体,国外媒体
-  - RULE-SET,国外网站,国外网站
-  - RULE-SET,苹果服务,苹果服务
-  - RULE-SET,局域网络,DIRECT
-  - RULE-SET,国内网站,DIRECT
-  - MATCH,黑白名单
+  - RULE-SET,大陆抖音,大陆抖音 # 大陆抖音
+  - RULE-SET,TikTok,海外抖音 # 海外抖音
+  - RULE-SET,微博服务,微博服务 # 微博服务
+  - RULE-SET,微信服务,微信服务 # 微信服务
+  - RULE-SET,Youtube,谷歌服务
+  - RULE-SET,Google,谷歌服务
+  - RULE-SET,Telegram,电报消息
+  - DOMAIN,ghfast.top,DIRECT # 订阅更新
+  - RULE-SET,Emby,Emby #  Emby规则
+  # - PROCESS-NAME,Telegram,REJECT-DROP # For Telegram macOS
+  - RULE-SET,Lan,DIRECT
+  - RULE-SET,Reject,REJECT
+  - GEOIP,CN,DIRECT
+  - MATCH,兜底策略
 
 # [远程规则]
 rule-providers:
-  规则修正:
+  苹果服务:
     type: http
-    path: ./Ruleset/Unbreak.yaml
-    url: https://raw.githubusercontent.com/Centralmatrix3/Matrix-io/master/Clash/Ruleset/Unbreak.yaml
+    path: ./Ruleset/Apple.yaml
+    url: https://raw.githubusercontent.com/Centralmatrix3/Matrix-io/master/Clash/Ruleset/Apple.yaml
     behavior: classical
     interval: 86400
     format: yaml
+   Youtube:
+    type: http
+    path: ./Rules/YouTube.list
+    url: https://github.com/Repcz/Tool/raw/X/Stash/Rules/YouTube.list
+    behavior: classical
+    interval: 86400
+    format: text
+
+  Google:
+    type: http
+    path: ./Rules/Google.list
+    url: https://github.com/Repcz/Tool/raw/X/Stash/Rules/Google.list
+    behavior: classical
+    interval: 86400
+    format: text
+    
+    Telegram:
+    type: http
+    path: .Rules/Telegram.list
+    url: https://github.com/Repcz/Tool/raw/X/Stash/Rules/Telegram.list
+    behavior: classical
+    interval: 86400
+    format: text   
     
   人工智能:
     type: http
@@ -308,21 +359,6 @@ rule-providers:
     interval: 86400
     format: yaml
 
-  广告拦截:
-    type: http
-    path: ./Ruleset/Advertising.yaml
-    url: https://raw.githubusercontent.com/Centralmatrix3/Matrix-io/master/Clash/Ruleset/Advertising.yaml
-    behavior: domain
-    interval: 86400
-    format: yaml
-
-  港台媒体:
-    type: http
-    path: ./Ruleset/HMTMedia.yaml
-    url: https://raw.githubusercontent.com/Centralmatrix3/Matrix-io/master/Clash/Ruleset/HMTMedia.yaml
-    behavior: classical
-    interval: 86400
-    format: yaml
 
   国内媒体:
     type: http
